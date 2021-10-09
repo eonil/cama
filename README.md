@@ -173,7 +173,7 @@ Now you get an idea how this works.
 Next Steps
 ----------
 - Check `ToDo` example source code for full implementations.
-- Check another example source code ["CoinBook"](https://github.com/eonil/coinbook)
+- Check another example source code ["CoinBook"](https://github.com/eonil/coinbook).
 
 
 
