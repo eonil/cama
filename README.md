@@ -92,8 +92,10 @@ And connect them so they can exchange messages.
         }
     }
 
-Convert `Shell` into pseudo actor as it requires to run in main thread
-to work properly.
+Implement message processors.
+
+And convert some actors into MainActor as they require to run 
+in main thread to work properly.
 
     @MainActor
     public final class Root {
@@ -128,13 +130,7 @@ to work properly.
             let send = Chan<Rendition>()
             Task {
                 for await x in recv {
-                    switch x {
-                    case let .addNewItemAtLast(text):
-                        state.items.append(text)
-                    case .removeAll:
-                        state.items.removeAll()
-                    }
-                    await send <- .snapshot(state)
+                    dump(x)
                 }
             }
             return send
@@ -146,47 +142,14 @@ to work properly.
         var items = [String]()
     }
 
-
-
-
-
     @MainActor
     final class Shell {
-        private let window = UIWindow(frame: UIScreen.main.bounds)
-        private let host = UIHostingController(rootView: AnyView(EmptyView()))
         func run(_ recv:Chan<Rendition>) -> Chan<Action> {
-            window.makeKeyAndVisible()
-            window.rootViewController = host
             let send = Chan<Action>()
             Task {
                 /// Prints computation output.
                 for await x in recv {
-                    switch x {
-                    case let .snapshot(x):
-                        func ui() -> some View {
-                            VStack(alignment: .center, spacing: 20) {
-                                List {
-                                    ForEach(x.items.indices, id: \.self) { i in
-                                        Text(x.items[i])
-                                    }
-                                }
-                                HStack(alignment: .center, spacing: 40) {
-                                    Button("Add New") {
-                                        Task {
-                                            await send <- .addNewItemAtLast("new item")
-                                        }
-                                    }
-                                    Button("Remove All") {
-                                        Task {
-                                            await send <- .removeAll
-                                        }
-                                    }
-                                }
-                                Spacer(minLength: 40)
-                            }
-                        }
-                        host.rootView = AnyView(ui())
-                    }
+                    dump(x)
                 }
             }
             return send
@@ -202,7 +165,24 @@ to work properly.
         case snapshot(State)
     }
 
+Now you get an idea how this works.
 
 
 
 
+Next Steps
+----------
+- Check `ToDo` example source code for full implementations.
+- Check another example source code ["CoinBook"](https://github.com/eonil/coinbook)
+
+
+
+License
+-------
+Use of this content is licensed under "CC-BY-4.0 License".
+You can do whatever you want. Just please don't forget to linking this repo.
+I do not responsible to anything happen by content of this repo.
+
+Copyright(C) Eonil, Hoon H., 2021.
+All rights reserved.
+ 
