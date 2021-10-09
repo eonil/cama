@@ -180,8 +180,8 @@ Next Steps
 License
 -------
 Use of this content is licensed under "CC-BY-4.0 License".
-You can do whatever you want. Just please don't forget to linking this repo.
-I do not responsible to anything happen by content of this repo.
+You can do whatever you want. Just please don't forget to linking this repo
+so people can find out the original text.
 
 Copyright(C) Eonil, Hoon H., 2021.
 All rights reserved.
